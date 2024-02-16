@@ -1,0 +1,32 @@
+{
+    "name": "marco/lampredotto",
+    "description": "A fully featured Unimia replacement",
+    "license": "ISC",
+    "autoload": {
+        "psr-4": {
+            "Lampredotto\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marco Bauce"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^7.0",
+        "relay/relay": "^2.1",
+        "laminas/laminas-diactoros": "^3.3",
+        "middlewares/fast-route": "^2.0",
+        "middlewares/request-handler": "^2.0",
+        "narrowspark/http-emitter": "^2.0",
+        "robmorgan/phinx": "^0.16.0",
+        "twig/twig": "^3.0",
+        "monolog/monolog": "^3.5"
+    },
+    "scripts": {
+        "start": "php -S localhost:8000 -t public/",
+        "migrate": "./vendor/bin/phinx migrate --configuration config/phinx.php",
+        "rollback": "./vendor/bin/phinx rollback --configuration config/phinx.php",
+        "seed": "vendor/bin/phinx seed:run -c config/phinx.php"
+    }
+}
