@@ -20,8 +20,9 @@ class HelloWorld
 
     public function __invoke(): void
     {
-        $this->logger->info("Home page action dispatched");
-        echo $this->view->render('hello.twig', ['name' => 'Fabien']);
+        $this->logger->info("Student page action dispatched");
+        // echo $this->view->render('hello.twig', ['name' => 'Fabien']);
+        echo $this->view->render('home_student.twig');
         // echo 'Hello, World!';
     }
     // public function __invoke(Request $request, Response $response, string $template, array $params = []): Response
