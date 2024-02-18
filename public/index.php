@@ -23,7 +23,8 @@ $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/container.php');
 $container = $containerBuilder->build();
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addRoute('GET', '/', 'Lampredotto\HelloWorld');
+    $r->addRoute('GET', '/', ['Lampredotto\LoginController', 'login']);
+    $r->addRoute('GET', '/student', 'Lampredotto\HelloWorld');
     // $r->addRoute('GET', '/article/{id}', ['SuperBlog\Controller\ArticleController', 'show']);
 });
 
