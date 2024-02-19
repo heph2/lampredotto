@@ -15,17 +15,14 @@ use function DI\get;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $containerBuilder = new ContainerBuilder();
-
-// Add DI container definitions
 $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/container.php');
-
-// Create DI container instance
 $container = $containerBuilder->build();
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
     $r->addRoute('GET', '/', ['Lampredotto\LoginController', 'login']);
-    $r->addRoute('GET', '/student', 'Lampredotto\HelloWorld');
-    // $r->addRoute('GET', '/article/{id}', ['SuperBlog\Controller\ArticleController', 'show']);
+    $r->addRoute('GET', '/student', 'Lampredotto\StudentController');
+    $r->addRoute('GET', '/secretary', 'Lampredotto\SecretaryController');
+    $r->addRoute('GET', '/teacher', 'Lampredotto\TeacherController');
 });
 
 $route = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -42,24 +39,6 @@ switch ($route[0]) {
     case FastRoute\Dispatcher::FOUND:
         $controller = $route[1];
         $parameters = $route[2];
-
-        // We could do $container->get($controller) but $container->call()
-        // does that automatically
         $container->call($controller, $parameters);
         break;
 }
-
-// $routes = simpleDispatcher(function (RouteCollector $r) {
-//     $r->get('/hello', HelloWorld::class);
-// });
-
-// $middlewareQueue[] = new FastRoute($routes);
-// $middlewareQueue[] = new RequestHandler($container);
-
-// /** @noinspection PhpUnhandledExceptionInspection */
-// $requestHandler = new Relay($middlewareQueue);
-// $response = $requestHandler->handle(ServerRequestFactory::fromGlobals());
-
-// $emitter = new SapiEmitter();
-// /** @noinspection PhpVoidFunctionResultUsedInspection */
-// return $emitter->emit($response);
