@@ -2,3 +2,5 @@ var/
 vendor/
 templates/cache/
 .DS_STORE
+BDLAB_954043_BauceMarco.tar
+dump.sql
