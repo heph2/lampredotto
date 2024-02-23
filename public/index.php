@@ -41,6 +41,7 @@ $routeDispatcher = Router\simpleDispatcher(function (Router\RouteCollector $r) {
     $r->addRoute('POST', '/teacher/exams/new', ['Lampredotto\Controllers\CalendarController', 'addExam']);
     $r->addRoute('POST', '/teacher/exams/delete', ['Lampredotto\Controllers\CalendarController', 'deleteExam']);
     $r->addRoute('GET', '/secretary', 'Lampredotto\Controllers\SecretaryController');
+    $r->addRoute('POST', '/secretary/students/add', ['Lampredotto\Controllers\SecretaryController', 'addStudent']);
     // $r->addGroup('/teacher', function (Router\RouteCollector $r) {
     //     $r->addRoute('GET', '/', 'Lampredotto\TeacherController');
     //     $r->addRoute('GET', '/settings', 'Lampredotto\SettingsController');
