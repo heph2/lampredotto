@@ -1,0 +1,50 @@
+{% extends 'layout.twig' %}
+
+{% block contents %}
+<div class="flex h-screen bg-gray-100">
+  <!-- sidebar -->
+  {% include 'sidebar.twig' %}
+
+  
+    <div class="p-4">
+        <p class="mt-8 text-gray-600 text-2xl">Qui puoi prenotare i tuoi esami</p>
+        <div class="flex flex-wrap gap-4 p-6 justify-center text-lg font-serif">
+          {% for exam in exams %}
+          <a href="#"
+              class="bg-gray-100 flex-grow text-black border-l-8 border-green-500 rounded-md px-3 py-2 w-full md:w-5/12 lg:w-3/12">
+              {{ exam.name }}
+              <div class="text-gray-500 font-thin text-sm pt-1">
+                  <span>Room: {{ exam.room }}</span>
+                  <span>Date: {{ exam.exam_date }}</span>
+              </div>
+              <form action="/student/exams/enroll" method="post">
+                <input type="hidden" name="course_id" value="{{ exam.course_id }}">
+                <input type="hidden" name="exam_name" value="{{ exam.name }}">
+                <button type="submit" class="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Iscriviti</button>
+            </form>          
+          </a>
+          {% endfor %}
+        </div>           
+    </div>
+    <div class="p-4">
+        <p class="mt-8 text-gray-600 text-2xl">Esami a cui sei iscritto</p>
+        <div class="flex flex-wrap gap-4 p-6 justify-center text-lg font-serif">
+          {% for exam in enrolledExams %}
+          <a href="#"
+              class="bg-gray-100 flex-grow text-black border-l-8 border-yellow-500 rounded-md px-3 py-2 w-full md:w-5/12 lg:w-3/12">
+              {{ exam.name }}
+              <div class="text-gray-500 font-thin text-sm pt-1">
+                  <span>Room: {{ exam.room }}</span>
+                  <span>Date: {{ exam.exam_date }}</span>
+              </div>
+              <form action="/student/exams/delete" method="post">
+                <input type="hidden" name="course_id" value="{{ exam.course_id }}">
+                <input type="hidden" name="exam_name" value="{{ exam.name }}">
+                <button type="submit" class="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Cancella Iscrizione</button>
+            </form>          
+          </a>
+          {% endfor %}
+        </div>           
+    </div>    
+</div>
+{% endblock %}

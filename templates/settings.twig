@@ -1,0 +1,40 @@
+{% extends 'layout.twig' %}
+
+{% block contents %}
+<div class="container">
+    <h2>User Management</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>johndoe@example.com</td>
+                <td>
+                    <!-- View User Form -->
+                    <form action="/viewUser" method="get">
+                        <input type="hidden" name="userId" value="User1">
+                        <button type="submit">View</button>
+                    </form>
+                    <!-- Edit User Form -->
+                    <form action="/editUser" method="get">
+                        <input type="hidden" name="userId" value="User1">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <!-- Delete User Form -->
+                    <form action="/deleteUser" method="post">
+                        <input type="hidden" name="userId" value="User1">
+                        <button type="submit" class="btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <!-- Repeat for each user -->
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,9 +1,39 @@
-{% extends 'template.twig' %}
+{% extends 'layout.twig' %}
 
 {% block contents %}
-<div class="flex flex-col">
-    <button> Button 1 </button>
-    <button> Button 2 </button>
-    <button> Button 3 </button>
-  </div>
+<div class="flex h-screen bg-gray-100">
+  <!-- sidebar -->
+    {% include 'sidebar.twig' %}
+    <div class="p-4">
+        <h1 class="text-2xl font-bold">Benvenuto {{ student.first_name }} {{ student.second_name }}</h1>
+        <p class="mt-2 text-gray-600">Qui puoi visualizzare alcune informazioni riguardo al tuo profilo e visitare la tua carriera</p>
+        <div class="mt-4">
+            <h2 class="text-xl font-bold">Informazioni Personali</h2>
+            <p class="text-lg text-gray-800 mt-2">Nome: <span class="font-semibold">{{ student.first_name }}</span></p>
+            <p class="text-lg text-gray-800">Cognome: <span class="font-semibold">{{ student.second_name }}</span></p>
+            <p class="text-lg text-gray-800">Email: <span class="font-semibold">{{ student.email }}</span></p>
+        </div>
+
+        <div class="mt-4">
+            <h2 class="text-xl font-bold">Informazioni sul Corso di Laurea</h2>
+            <p class="text-lg text-gray-800 mt-2">Corso: <span class="font-semibold">{{ cdl.name }}</span></p>
+            <p class="text-gray-600">Descrizione: {{ cdl.description }}</p>
+        </div>
+
+        <h2 class="mt-4 text-xl font-bold">Esami Conseguiti</h2>
+        <div class="flex flex-wrap gap-4 p-6 justify-center text-lg font-serif">
+          {% for exam in exams %}
+          <a href="#"
+              class="bg-gray-100 flex-grow text-black border-l-8 border-green-500 rounded-md px-3 py-2 w-full md:w-5/12 lg:w-3/12">
+              {{ exam.name }}
+              <div class="text-gray-500 font-thin text-sm pt-1">
+                  <span>Score: {{ exam.score }}</span>
+                  <span>Room: {{ exam.room }}</span>
+                  <span>Date: {{ exam.exam_date }}</span>
+              </div>
+          </a>          
+          {% endfor %}
+        </div>           
+    </div>
+</div>
 {% endblock %}

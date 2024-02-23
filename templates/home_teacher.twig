@@ -1,0 +1,26 @@
+{% extends 'layout.twig' %}
+
+{% block contents %}
+<div class="flex flex-wrap h-screen bg-gray-100">
+    <!-- Sidebar -->
+    {% include 'sidebar.twig' %}
+
+    <!-- Main Content -->
+    <div class="flex-1 p-6">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800">Benvenuto, {{ teacher.first_name }} {{ teacher.last_name }}</h1>
+            <p class="mt-2 text-lg text-gray-600">Qui puoi visualizzare alcune informazioni riguardo al tuo profilo.</p>
+
+            <!-- Course Information -->
+            <div class="mt-6 bg-white shadow rounded-lg overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Informazioni sul Corso di Laurea</h2>
+                    <p class="text-lg text-gray-600">Corso: <span class="font-semibold">{{ course.name }}</span></p>
+                    <p class="text-gray-600 mt-2">Descrizione: {{ course.description }}</p>
+                    <p class="text-gray-600">Anno di inizio: {{ course.year }}</p>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+{% endblock %}
