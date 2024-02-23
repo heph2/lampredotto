@@ -17,7 +17,7 @@ final class InitialMigration extends AbstractMigration
         $users->addColumn('first_name', 'text')
             ->addColumn('second_name', 'text')
             ->addColumn('email', 'text')
-            ->addColumn('password', 'string', ['limit' => 256])
+            ->addColumn('password', 'string')
             ->create();
 
         $teachers = $this->table('teachers', ['id' => false, 'primary_key' => ['teacher_id']]);
@@ -70,7 +70,7 @@ final class InitialMigration extends AbstractMigration
                    ['delete'=> 'CASCADE', 'update'=> 'NO_ACTION', 'constraint' => 'exam'])
                    ->addColumn('course_id', 'integer')
                    ->addColumn('name', 'string')
-                //    ->addColumn('exam', 'integer')
+                   ->addColumn('score', 'integer')
                    ->addColumn('student', 'integer')
                    ->create();
     }
