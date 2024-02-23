@@ -21,28 +21,28 @@ class CourseSeeder extends AbstractSeed
             [
                 'teacher' => 3, // Assume this teacher_id exists in your `teachers` table
                 'cdl' => 1, // Assume this ID exists in your `cdl` table
-                'name' => 'Introduction to Philosophy',
-                'description' => 'An overview of major philosophical ideas and thinkers.',
+                'name' => 'Basi di Dati',
+                'description' => 'Basi di Dati',
                 'year' => 1,
             ],
             [
                 'teacher' => 4, // Another existing teacher_id
                 'cdl' => 2, // Another existing cdl ID
-                'name' => 'Advanced Mathematics',
+                'name' => 'Analisi Matematica',
                 'description' => 'A deep dive into complex mathematical theories and applications.',
                 'year' => 2,
             ],
             [
                 'teacher' => 3, // Assume this teacher_id exists in your `teachers` table
                 'cdl' => 1, // Assume this ID exists in your `cdl` table
-                'name' => 'Databases',
-                'description' => 'An overview of major philosophical ideas and thinkers.',
+                'name' => 'Algoritmi e Strutture Dati',
+                'description' => 'Algoritmi e Strutture Dati',
                 'year' => 1,
             ],
             [
                 'teacher' => 4, // Another existing teacher_id
                 'cdl' => 2, // Another existing cdl ID
-                'name' => 'Discrete Mathematics',
+                'name' => 'Matematica del Discreto',
                 'description' => 'A deep dive into complex mathematical theories and applications.',
                 'year' => 2,
             ],            
