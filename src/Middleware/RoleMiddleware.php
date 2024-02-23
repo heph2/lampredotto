@@ -29,7 +29,7 @@ class RoleMiddleware implements MiddlewareInterface
         $rolePaths = [
             'student' => ['/student', '/student/exams', '/student/exams/enroll', '/student/exams/delete', '/student/settings', '/login'],
             'teacher' => ['/teacher', '/teacher/exams', '/teacher/exams/new', '/teacher/exams/delete', '/login'],
-            'secretary'   => ['/secretary', '/login'],
+            'secretary'   => ['/secretary', '/secretary/students/add', '/login'],
         ];
 
         error_log("Role: " . $userRole);

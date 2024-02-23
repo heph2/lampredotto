@@ -30,13 +30,27 @@ class SecretaryController
         $user_role = $_SESSION['role'];
 
         $secretaryData = $this->secretary->getById($user_id);
+        $students = $this->secretary->getStudents();
+        $teachers = $this->secretary->getTeachers();
+        $cdls = $this->secretary->getCDLs();
         $html = $this->view->render('home_secretary.twig', [
+            'students' => $students,
+            'teachers' => $teachers,
             'secretary' => $secretaryData,
+            'cdls' => $cdls,
             'role' => $user_role
         ]);
         $this->response->withStatus(200);
         $this->response->withHeader('Content-Type', 'text/html');
         $this->response->getBody()->write($html);
         return $this->response;
+    }
+
+    public function addStudent(Request $request): Response
+    {
+        $this->logger->info("Add student action dispatched");
+        $data = $request->getParsedBody();
+        $this->secretary->addStudent($data);
+        return $this->response->withStatus(302)->withHeader('Location', '/secretary');
     }
 }
