@@ -31,10 +31,20 @@ composer migrate && composer seed
 
 ## Utilizzo
 
-Possiamo direttamente utilizzare il server di sviluppo di PHP
+Possiamo direttamente utilizzare il server di sviluppo di PHP, ma prima dobbiamo generare i css con TailwindCSS
+
+```bash
+tailwindcss -i src/templates/css/input.css -o public/css/output.css
+```
 
 ```bash
 composer start
+```
+
+Inoltre Lampredotto proverá a loggare utilizzando Monolog su un file di log, per visualizzare i log possiamo utilizzare il comando
+
+```bash
+tail -f var/log/app.log
 ```
 
 ## Struttura Progetto
@@ -57,6 +67,14 @@ public -> File pubblici
 config -> Dependency Injection e configurazioni
 docs -> Documentazione varia (Schema ER/Logico)
 
+```
+
+## Rilascio
+
+Possiamo generare un dump del db e un tar lanciando
+    
+```bash
+composer release
 ```
 
 ## License

@@ -30,6 +30,7 @@
         "start": "php -S localhost:8000 -t public/",
         "migrate": "./vendor/bin/phinx migrate",
         "rollback": "./vendor/bin/phinx rollback",
-        "seed": "vendor/bin/phinx seed:run"
+        "seed": "vendor/bin/phinx seed:run",
+        "release": "pg_dump -h localhost -U postgres -d lampredotto_staging > dump.sql && tar -cvf BDLAB_954043_BauceMarco.tar ."
     }
 }
