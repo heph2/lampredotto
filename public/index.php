@@ -1,11 +1,16 @@
 <?php
 declare(strict_types=1);
+session_start();
 
 use DI\ContainerBuilder;
-use Lampredotto\HelloWorld;
-use FastRoute\RouteCollector;
+use FastRoute as Router;
+use Middlewares\FastRoute;
+use Middlewares\RequestHandler;
+use Middlewares\Utils\Dispatcher;
+use Middlewares\Utils\Factory;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Relay\Relay;
 use Monolog\Processor\UidProcessor;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -14,31 +19,55 @@ use function DI\get;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
+$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
+    $_SERVER, $_GET, $_POST, $_COOKIE, $_FILES
+);
+
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(dirname(__DIR__) . '/config/container.php');
 $container = $containerBuilder->build();
 
-$dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addRoute('GET', '/', ['Lampredotto\LoginController', 'login']);
-    $r->addRoute('GET', '/student', 'Lampredotto\StudentController');
-    $r->addRoute('GET', '/secretary', 'Lampredotto\SecretaryController');
-    $r->addRoute('GET', '/teacher', 'Lampredotto\TeacherController');
+$routeDispatcher = Router\simpleDispatcher(function (Router\RouteCollector $r) {
+    $r->addRoute('GET', '/', 'Lampredotto\SettingsController');
+    $r->addRoute('GET', '/login', 'Lampredotto\Controllers\LoginController');
+    $r->addRoute('POST', '/login', ['Lampredotto\Controllers\LoginController', 'login']);
+    $r->addRoute('GET', '/logout', ['Lampredotto\Controllers\LoginController', 'logout']);
+    $r->addRoute('GET', '/student', 'Lampredotto\Controllers\StudentController');
+    $r->addRoute('GET', '/student/exams', 'Lampredotto\Controllers\ExamController');
+    $r->addRoute('POST', '/student/exams/enroll', ['Lampredotto\Controllers\ExamController', 'enroll']);
+    $r->addRoute('POST', '/student/exams/delete', ['Lampredotto\Controllers\ExamController', 'unenroll']);
+    $r->addRoute('GET', '/teacher', 'Lampredotto\Controllers\TeacherController');
+    $r->addRoute('GET', '/teacher/exams', 'Lampredotto\Controllers\CalendarController');
+    $r->addRoute('POST', '/teacher/exams/new', ['Lampredotto\Controllers\CalendarController', 'addExam']);
+    $r->addRoute('POST', '/teacher/exams/delete', ['Lampredotto\Controllers\CalendarController', 'deleteExam']);
+    $r->addRoute('GET', '/secretary', 'Lampredotto\Controllers\SecretaryController');
+    // $r->addGroup('/teacher', function (Router\RouteCollector $r) {
+    //     $r->addRoute('GET', '/', 'Lampredotto\TeacherController');
+    //     $r->addRoute('GET', '/settings', 'Lampredotto\SettingsController');
+    //     $r->addRoute('GET', '/settings/{id}', '');
+    // });
+    // $r->addGroup('/secretary', function (Router\RouteCollector $r) {
+    //     $r->addRoute('GET', '/', 'Lampredotto\SecretaryController');
+    //     $r->addRoute('GET', '/settings', 'Lampredotto\SettingsController');
+    //     $r->addRoute('GET', '/settings/{id}', '');
+    // });
+    // $r->addGroup('/student', function (Router\RouteCollector $r) {
+    //     $r->addRoute('GET', '/', 'Lampredotto\Controllers\StudentController');
+    //     $r->addRoute('GET', '/settings', 'Lampredotto\SettingsController');
+    //     $r->addRoute('GET', '/exams', 'Lampredotto\ExamController');
+    // });
 });
 
-$route = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$middlewareQueue[] = new Middlewares\Emitter();
+// $middlewareQueue[] = new Lampredotto\Middleware\PreventLoginRedirectMiddleware();
+// $middlewareQueue[] = new Lampredotto\Middleware\SessionAuthMiddleware();
+$middlewareQueue[] = new Lampredotto\Middleware\RoleMiddleware(
+    new Lampredotto\Controllers\LoginController($container)
+);
+$middlewareQueue[] = new FastRoute($routeDispatcher);
+$middlewareQueue[] = new RequestHandler($container);
 
-switch ($route[0]) {
-    case FastRoute\Dispatcher::NOT_FOUND:
-        echo '404 Not Found';
-        break;
 
-    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        echo '405 Method Not Allowed';
-        break;
+$requestHandler = new Relay($middlewareQueue);
+$response = $requestHandler->handle($request);
 
-    case FastRoute\Dispatcher::FOUND:
-        $controller = $route[1];
-        $parameters = $route[2];
-        $container->call($controller, $parameters);
-        break;
-}
